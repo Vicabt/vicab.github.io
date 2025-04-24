@@ -717,12 +717,13 @@ if ((employee.flags & HOURLY_FLAG) && (employee.age > 65))</code></pre>
     </div>
 
     <script>
-        // JavaScript para la interactividad
+        // JavaScript para la interactividad y el scroll
         document.addEventListener('DOMContentLoaded', () => {
             const sectionTitles = document.querySelectorAll('.section-title');
 
             sectionTitles.forEach(title => {
                 title.addEventListener('click', () => {
+                    const section = title.parentElement; // Obtiene el elemento padre .section
                     const content = title.nextElementSibling;
 
                     // Ocultar todos los demás contenidos antes de mostrar el actual
@@ -742,10 +743,16 @@ if ((employee.flags & HOURLY_FLAG) && (employee.age > 65))</code></pre>
                     });
 
                     // Alternar la clase 'visible' en el contenido clicado
-                    content.classList.toggle('visible');
+                    const isVisible = content.classList.toggle('visible');
 
-                    // Resetear el botón "Mostrar más" si se colapsa la sección
-                    if (!content.classList.contains('visible')) {
+                    // Si la sección se acaba de abrir, desplazar hacia ella
+                    if (isVisible) {
+                        section.scrollIntoView({
+                            behavior: 'smooth', // Desplazamiento suave
+                            block: 'start' // Alinea la parte superior del elemento con la parte superior del viewport
+                        });
+                    } else {
+                         // Resetear el botón "Mostrar más" si se colapsa la sección
                          const currentMoreInfo = content.querySelector('.more-info');
                          if (currentMoreInfo && !currentMoreInfo.classList.contains('hidden')) {
                              currentMoreInfo.classList.add('hidden');
